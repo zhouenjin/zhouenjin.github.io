@@ -6,28 +6,25 @@
     <title>Enjin Zhou</title>
     <meta
       name="description"
-      content="Enjin Zhou's personal homepage: mathematics student, reinforcement learning learner, embodied AI explorer, and open-source note builder."
+      content="Enjin Zhou's homepage: mathematics student at Xi'an Jiaotong University working on reinforcement learning, embodied AI, and simulation."
     />
-    <meta name="theme-color" content="#f5f1e8" />
+    <meta name="theme-color" content="#090909" />
     <meta property="og:title" content="Enjin Zhou" />
     <meta
       property="og:description"
-      content="Personal homepage, projects, and blog by Enjin Zhou."
+      content="Homepage, projects, and notes by Enjin Zhou."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://zhouenjin.github.io/" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <div class="page-glow glow-left"></div>
-    <div class="page-glow glow-right"></div>
-
     <header class="site-header">
       <div class="container nav-shell">
         <a class="brand" href="/">Enjin Zhou</a>
@@ -44,7 +41,7 @@
         </button>
         <nav class="site-nav" id="site-nav">
           <a href="#about">About</a>
-          <a href="#research">Research</a>
+          <a href="#news">News</a>
           <a href="#projects">Projects</a>
           <a href="/blog/">Blog</a>
           <a href="#contact">Contact</a>
@@ -52,251 +49,148 @@
       </div>
     </header>
 
-    <main>
+    <main class="page">
       <section class="hero section">
-        <div class="container hero-grid">
-          <div class="hero-copy reveal">
-            <p class="eyebrow">Personal Homepage</p>
-            <h1>
-              Mathematics student,
-              <span>RL learner</span>,
-              and builder of clear notes.
-            </h1>
-            <p class="hero-text">
-              I am Enjin Zhou, an undergraduate student in the Experimental
-              Class of Mathematics and Applied Mathematics at Xi'an Jiaotong
-              University. I care about reinforcement learning, embodied AI,
-              simulation, and turning hard technical material into notes that
-              are structured, readable, and genuinely useful.
+        <div class="container intro-shell">
+          <div class="portrait-wrap reveal">
+            <img
+              class="portrait"
+              src="/assets/profile-square.jpg"
+              alt="Portrait of Enjin Zhou"
+            />
+          </div>
+          <div class="intro-copy reveal reveal-delay-1">
+            <h1>Enjin Zhou</h1>
+            <p class="intro-subtitle">
+              Undergraduate student in the Experimental Class of Mathematics
+              and Applied Mathematics at Xi'an Jiaotong University.
             </p>
-            <div class="hero-actions">
-              <a class="button button-primary" href="/blog/">Read the blog</a>
-              <a class="button button-secondary" href="https://github.com/zhouenjin" target="_blank" rel="noopener">
-                GitHub Profile
-              </a>
-            </div>
-            <div class="meta-row">
-              <span>Xi'an, China</span>
-              <a href="mailto:ginzej@stu.xjtu.edu.cn">ginzej@stu.xjtu.edu.cn</a>
-              <a href="https://github.com/zhouenjin" target="_blank" rel="noopener">@zhouenjin</a>
+            <p>
+              I am interested in reinforcement learning, embodied AI,
+              simulation, and the habit of turning scattered technical material
+              into clean, readable notes. Recently I have been building study
+              repositories around RL theory, Isaac Sim basics, and simulation
+              methods from PBD and XPBD to FEM.
+            </p>
+            <p>
+              My current work also includes a research direction on
+              dual-level DRL plus GA for combinatorial optimization, and a
+              theory-oriented track on Transformer depth, stability, and
+              continuous-depth views.
+            </p>
+            <div class="inline-links">
+              <a href="mailto:ginzej@stu.xjtu.edu.cn">Email</a>
+              <a href="https://github.com/zhouenjin" target="_blank" rel="noopener">GitHub</a>
+              <a href="/blog/">Blog</a>
             </div>
           </div>
-
-          <aside class="hero-side reveal reveal-delay-1">
-            <div class="profile-card">
-              <img
-                class="avatar"
-                src="/assets/profile-square.jpg"
-                alt="Enjin Zhou portrait"
-              />
-              <div>
-                <p class="card-kicker">Current Focus</p>
-                <ul class="compact-list">
-                  <li>Reinforcement learning learning notes</li>
-                  <li>Embodied AI with Isaac Sim</li>
-                  <li>Simulation fundamentals from PBD to FEM</li>
-                </ul>
-              </div>
-            </div>
-            <div class="mini-panel">
-              <p class="card-kicker">Quick Facts</p>
-              <div class="fact-grid">
-                <div>
-                  <span class="fact-label">GPA</span>
-                  <strong>92.6 / 100</strong>
-                </div>
-                <div>
-                  <span class="fact-label">English</span>
-                  <strong>IELTS 7.0</strong>
-                </div>
-                <div>
-                  <span class="fact-label">CET-6</span>
-                  <strong>600+</strong>
-                </div>
-                <div>
-                  <span class="fact-label">Open Repos</span>
-                  <strong>4</strong>
-                </div>
-              </div>
-            </div>
-          </aside>
         </div>
       </section>
 
       <section class="section" id="about">
-        <div class="container content-grid">
-          <div class="section-heading reveal">
-            <p class="eyebrow">About</p>
-            <h2>A homepage that reflects both study and practice.</h2>
-          </div>
-          <div class="card prose reveal reveal-delay-1">
-            <p>
-              My recent work sits at the intersection of mathematical thinking,
-              algorithm intuition, and implementation practice. I like building
-              compact learning systems: notes that turn scattered material into
-              a map, scripts that make ideas observable, and projects that let
-              theory become something concrete.
-            </p>
-            <p>
-              Right now, that shows up in three directions. First, a
-              reinforcement learning note system that organizes methods from
-              MDPs to PPO. Second, embodied AI experiments in Isaac Sim,
-              starting from scene setup, robot kinematics, and tool-center pose
-              reasoning. Third, simulation notes that walk from PBD and XPBD to
-              FEM with runnable code and visual comparisons.
-            </p>
-          </div>
+        <div class="container narrow-column reveal">
+          <h2>About</h2>
+          <p>
+            My academic background is mathematical, but I like working where
+            concepts become operational. That usually means one of three things
+            for me: clarifying an algorithmic idea, writing a small experiment
+            that makes it visible, or organizing a body of notes so that it can
+            be revisited later without friction.
+          </p>
+          <p>
+            I currently maintain public repositories that document how I study
+            reinforcement learning, embodied AI, and simulation. The aim is not
+            just to archive information, but to make it easier to learn again.
+          </p>
         </div>
       </section>
 
-      <section class="section" id="research">
-        <div class="container">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Research</p>
-            <h2>Current directions and selected work</h2>
-          </div>
-          <div class="card-grid-two">
-            <article class="card reveal">
-              <p class="card-kicker">Current Research</p>
-              <h3>Dual-level DRL + GA for combinatorial optimization</h3>
-              <p>
-                Working on a project around dual-level reinforcement learning
-                and genetic algorithms for large-scale combinatorial
-                optimization. The extracted resume information points to
-                recurrent PPO, LSTM-based modeling, and TSPLIB-scale experiments
-                as central ingredients.
-              </p>
-            </article>
-            <article class="card reveal reveal-delay-1">
-              <p class="card-kicker">Theory Track</p>
-              <h3>Transformer depth, stability, and ODE-inspired views</h3>
-              <p>
-                Also exploring Transformer theory through the lens of
-                infinite-depth residual dynamics, Lipschitz stability, and
-                continuous-depth formulations. This is the more mathematical
-                side of my current work and connects naturally to dynamical
-                systems thinking.
-              </p>
-            </article>
-          </div>
-          <div class="timeline reveal reveal-delay-2">
-            <article class="timeline-item">
-              <div class="timeline-date">2024.09 - Present</div>
-              <div class="timeline-body">
-                <h3>Xi'an Jiaotong University</h3>
-                <p>
-                  B.S. in Mathematics and Applied Mathematics, Experimental
-                  Class. Main strengths include strong academic performance,
-                  English proficiency, and an active habit of turning study
-                  material into structured technical notes.
-                </p>
-              </div>
-            </article>
-          </div>
+      <section class="section" id="news">
+        <div class="container narrow-column reveal">
+          <h2>News</h2>
+          <ul class="news-list">
+            <li>
+              <span class="news-date">2026</span>
+              Published this personal site and started a lightweight blog.
+            </li>
+            <li>
+              <span class="news-date">2026</span>
+              Open-sourced reinforcement learning notes with structured reading
+              routes from MDP to PPO.
+            </li>
+            <li>
+              <span class="news-date">2026</span>
+              Continued hands-on embodied AI experiments in Isaac Sim and
+              simulation learning notes around PBD, XPBD, and FEM.
+            </li>
+          </ul>
         </div>
       </section>
 
       <section class="section" id="projects">
-        <div class="container">
-          <div class="section-heading reveal">
-            <p class="eyebrow">Projects</p>
-            <h2>Open repositories I have been building recently</h2>
-          </div>
-          <div class="project-grid">
-            <article class="project-card reveal">
-              <p class="card-kicker">RL Notes</p>
-              <h3>Reinforcement learning study notes</h3>
+        <div class="container narrow-column reveal">
+          <h2>Selected Projects</h2>
+          <div class="simple-list">
+            <article class="simple-item">
+              <h3>
+                <a href="https://github.com/zhouenjin/rl-notes" target="_blank" rel="noopener">
+                  rl-notes
+                </a>
+              </h3>
               <p>
-                A note system designed for both Obsidian and GitHub, covering
-                MDPs, value-based methods, policy gradients, trust-region
-                methods, and selected model-based topics.
+                Reinforcement learning study notes for Obsidian and GitHub,
+                covering MDPs, value-based methods, policy gradients,
+                trust-region methods, and selected model-based topics.
               </p>
-              <ul class="compact-list">
-                <li>Algorithm panorama and learning path</li>
-                <li>Detailed PPO and TRPO notes</li>
-                <li>High-frequency confusion checklist for review</li>
-              </ul>
-              <div class="link-row">
-                <a href="https://github.com/zhouenjin/rl-notes" target="_blank" rel="noopener">Repository</a>
-                <a href="/blog/2026/why-ppo-replaced-trpo/">Derived blog post</a>
-              </div>
             </article>
 
-            <article class="project-card reveal reveal-delay-1">
-              <p class="card-kicker">Embodied AI</p>
-              <h3>Isaac Sim embodied basics</h3>
+            <article class="simple-item">
+              <h3>
+                <a href="https://github.com/zhouenjin/isaacsim-embodied-basics" target="_blank" rel="noopener">
+                  isaacsim-embodied-basics
+                </a>
+              </h3>
               <p>
-                A hands-on repository for learning embodied AI through small,
-                clear Isaac Sim experiments: scene creation, camera capture,
-                prim inspection, rigid body behavior, and Franka robot pose
-                analysis.
+                Small, focused Isaac Sim exercises for understanding scene
+                setup, camera observations, rigid body and collision behavior,
+                and Franka robot pose reasoning.
               </p>
-              <ul class="compact-list">
-                <li>Franka hand and tool-center pose reading</li>
-                <li>Rigid body vs collision behavior</li>
-                <li>Minimal scripts built for understanding, not abstraction</li>
-              </ul>
-              <div class="link-row">
-                <a href="https://github.com/zhouenjin/isaacsim-embodied-basics" target="_blank" rel="noopener">Repository</a>
-              </div>
             </article>
 
-            <article class="project-card reveal reveal-delay-2">
-              <p class="card-kicker">Simulation</p>
-              <h3>Simulation learning notes</h3>
+            <article class="simple-item">
+              <h3>
+                <a href="https://github.com/zhouenjin/simulation-learning-notes" target="_blank" rel="noopener">
+                  simulation-learning-notes
+                </a>
+              </h3>
               <p>
-                A compact simulation study area centered on rope demos and a
-                learning path from PBD to XPBD to FEM, combining notes, Python
-                demos, and comparison figures.
+                A compact learning route from PBD and XPBD to FEM, with notes,
+                comparison figures, and runnable Python demos.
               </p>
-              <ul class="compact-list">
-                <li>Concept-first route from constraints to energy methods</li>
-                <li>Runnable demos for PBD, XPBD, and FEM</li>
-                <li>Designed as a recoverable study index, not a code dump</li>
-              </ul>
-              <div class="link-row">
-                <a href="https://github.com/zhouenjin/simulation-learning-notes" target="_blank" rel="noopener">Repository</a>
-              </div>
             </article>
           </div>
         </div>
       </section>
 
-      <section class="section">
-        <div class="container">
-          <div class="feature-strip reveal">
-            <div>
-              <p class="eyebrow">Blog</p>
-              <h2>Writing from notes, not from noise</h2>
-              <p>
-                I wanted this site to include not only repositories, but also
-                readable articles. The first post turns my PPO and TRPO notes
-                into a cleaner standalone essay.
-              </p>
-            </div>
-            <a class="button button-primary" href="/blog/2026/why-ppo-replaced-trpo/">
-              Read the first post
-            </a>
+      <section class="section" id="contact">
+        <div class="container narrow-column reveal">
+          <h2>Contact</h2>
+          <p>
+            If you would like to discuss reinforcement learning, embodied AI,
+            simulation, or note systems for technical learning, feel free to
+            reach out.
+          </p>
+          <div class="inline-links">
+            <a href="mailto:ginzej@stu.xjtu.edu.cn">ginzej@stu.xjtu.edu.cn</a>
+            <a href="https://github.com/zhouenjin" target="_blank" rel="noopener">GitHub</a>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="site-footer section" id="contact">
-      <div class="container footer-shell reveal">
-        <div>
-          <p class="eyebrow">Contact</p>
-          <h2>Happy to connect around RL, simulation, and embodied AI.</h2>
-        </div>
-        <div class="footer-links">
-          <a href="mailto:ginzej@stu.xjtu.edu.cn">ginzej@stu.xjtu.edu.cn</a>
-          <a href="https://github.com/zhouenjin" target="_blank" rel="noopener">GitHub</a>
-          <a href="/blog/">Blog</a>
-        </div>
-      </div>
+    <footer class="site-footer">
       <div class="container footer-bottom">
         <p><span id="current-year"></span> © Enjin Zhou</p>
-        <p>Built as a lightweight GitHub Pages site.</p>
       </div>
     </footer>
 

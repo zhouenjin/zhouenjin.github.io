@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PPO 为什么在实践中取代了 TRPO | Enjin Zhou</title>
+    <meta
+      name="description"
+      content="周恩进关于 PPO 与 TRPO 的中文博客文章，讨论 PPO 为什么在工程实践中成为主流。"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="/">Enjin Zhou</a>
+        <button
+          class="nav-toggle"
+          id="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="site-nav" id="site-nav">
+          <a href="/">Home</a>
+          <a href="/blog/">Blog</a>
+          <a href="/blog/2026/why-ppo-replaced-trpo/">English</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="section">
+        <div class="container article-shell">
+          <h1 class="article-title reveal">PPO 为什么在实践中取代了 TRPO</h1>
+          <p class="article-subtitle reveal reveal-delay-1">
+            这篇文章从我的强化学习笔记整理而来，重点不是重复公式，而是解释一个更重要的问题：
+            为什么大家最后真的去用了 PPO，而不是停留在 TRPO 的优雅理论上。
+          </p>
+          <div class="post-meta-row reveal reveal-delay-1">
+            <span>2026</span>
+            <span>强化学习</span>
+            <span>中文版本</span>
+          </div>
+        </div>
+      </section>
+
+      <article class="section">
+        <div class="container article-shell">
+          <div class="article-card reveal">
+            <div class="article-prose article-prose-zh">
+              <p>
+                如果把从 TRPO 到 PPO 的变化压缩成一句话，那就是：强化学习并没有不再需要“安全的策略更新”，但它非常需要一种不用每轮都付出二阶优化代价的安全更新方法。
+              </p>
+              <p>
+                PPO 的价值正是在这里。它并不是换了一个完全不同的目标，而是把同样的目标，改写成了现代深度学习工作流真正愿意接受的形式。
+              </p>
+
+              <h2>TRPO 试图解决的问题是什么</h2>
+              <p>
+                最基础的策略梯度方法有一个常见麻烦：方向可能是对的，但步子不一定迈得对。一次更新如果走得太远，策略分布就可能发生剧烈变化，性能也会跟着崩掉；如果步子太小，训练又会非常慢。
+              </p>
+              <p>
+                TRPO 的核心思想很漂亮：不要让新策略离旧策略一下子走太远。它通过约束新旧策略之间的平均 KL 散度，把“更新幅度”这个问题正式写进了优化目标里。
+              </p>
+
+              <blockquote>
+                TRPO 真正重要的地方，不只是告诉我们往哪里走，而是告诉我们这一步最多能走多远。
+              </blockquote>
+
+              <h2>TRPO 为什么优雅，却不够好用</h2>
+              <p>
+                问题不在思想本身，而在实现路径。一旦加上 KL 约束，Actor 的更新就不再是普通的一阶梯度下降。实际做 TRPO 时，往往要处理 Fisher 向量积、共轭梯度、线搜索以及一系列数值细节。
+              </p>
+              <p>
+                这让 TRPO 在理论上很有说服力，但在工程上显得沉重。它不容易实现，不容易调试，也不容易像常规深度学习训练那样直接塞进现成基础设施里。
+              </p>
+
+              <h2>PPO 保留了什么，又改变了什么</h2>
+              <p>
+                PPO 保留了同样的高层目标：一边提升策略，一边控制策略变化幅度。它真正改变的是实现方式。PPO 不再显式求解带硬约束的二阶问题，而是把这种“不要更新过头”的想法压进一个可以直接训练的损失函数里。
+              </p>
+              <p>
+                最经典的 PPO-Clip 版本，会构造新旧策略的比值
+                <code>r_t = pi_new(a|s) / pi_old(a|s)</code>，然后把它裁剪在
+                <code>[1 - epsilon, 1 + epsilon]</code> 这个范围里，再取一个更保守的目标值。
+              </p>
+              <p>直觉上可以这么记：</p>
+              <ul>
+                <li>好动作可以鼓励，但不能一下鼓励过头。</li>
+                <li>坏动作可以压低，但不能一下压得太狠。</li>
+                <li>任何过大的概率比变化，都不应该被轻易相信。</li>
+              </ul>
+
+              <h2>PPO 真正赢下来的地方</h2>
+              <p>
+                PPO 最关键的胜利，并不是提出了一个比 TRPO 更“深刻”的理论，而是把 trust region 这种想法，翻译成了普通优化器也能直接处理的 loss。只要这一步做到，剩下的流程就会变得非常自然。
+              </p>
+              <ul>
+                <li>收集 on-policy 轨迹；</li>
+                <li>计算回报和 GAE 优势；</li>
+                <li>用普通 mini-batch 更新 actor 和 critic；</li>
+                <li>对同一批数据重复训练多个 epoch。</li>
+              </ul>
+              <p>
+                这里“多个 epoch”尤其关键。TRPO 一般做完一次昂贵的 actor 更新，就要重新采样；而 PPO 则可以在当前批数据上继续安全优化几轮。它的可用性几乎就是在这一刻被拉开的。
+              </p>
+
+              <h2>为什么“多轮训练”不等于 off-policy</h2>
+              <p>
+                这是 PPO 最容易被误解的点之一。PPO 虽然会在同一批数据上训练多个 epoch，但它仍然是 on-policy 算法。
+              </p>
+              <p>
+                真正的区分标准，不是当前这批数据有没有重复使用，而是跨不跨轮使用旧策略采集的数据。PPO 不会把上一轮的样本继续拿来训练。当前轮次结束后，这批数据就会被丢弃，下一轮必须重新收集。
+              </p>
+
+              <h2>我现在怎么理解 TRPO 和 PPO 的关系</h2>
+              <p>我现在更愿意这样记这条线：</p>
+              <ul>
+                <li>REINFORCE 说：直接优化策略。</li>
+                <li>Actor-Critic 说：加一个 critic 来降低方差。</li>
+                <li>TRPO 说：更新时别让策略一下子走太远。</li>
+                <li>PPO 说：保留这种安全直觉，但把它做成一个真的能训的 loss。</li>
+              </ul>
+              <p>
+                从这个角度看，PPO 更像一次实现层面的胜利。它不是抛弃了 TRPO 的思想，而是把 TRPO 的思想，改写成了整个深度学习生态都能接受的格式。
+              </p>
+
+              <h2>实现 PPO 时仍然要注意什么</h2>
+              <p>
+                PPO 虽然简化了很多东西，但不代表随便写就会稳定。真正落地时，我觉得至少有几件事要一直记住：
+              </p>
+              <ul>
+                <li>更新 actor 前先做 advantage normalization；</li>
+                <li>保持样本严格 on-policy，训练完就丢；</li>
+                <li>即使用了 clipping，也最好监控 KL 漂移；</li>
+                <li>把 clip 系数看成速度和稳定性的权衡；</li>
+                <li>不要把 gamma 和 lambda 混为一谈。</li>
+              </ul>
+
+              <h2>结语</h2>
+              <p>
+                把 TRPO 和 PPO 放在一起看之后，我越来越觉得，强化学习里的很多进展，并不一定来自全新的目标函数，也不一定来自更复杂的定理。有时候真正改变实践的，是把一个好想法翻译成大家真的能使用的形式。
+              </p>
+              <p>
+                这也是为什么 PPO 最终会在游戏环境、机器人控制、以及大模型 RLHF 这些地方成为默认选项。它没有丢掉 trust region 的直觉，而是让这种直觉真正变得可部署。
+              </p>
+            </div>
+          </div>
+
+          <div class="article-footer reveal reveal-delay-1">
+            <a class="button button-secondary" href="/blog/">返回 Blog</a>
+            <a class="button button-primary" href="/blog/2026/why-ppo-replaced-trpo/">
+              Read English version
+            </a>
+          </div>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <p><span id="current-year"></span> © Enjin Zhou</p>
+      </div>
+    </footer>
+
+    <script src="/main.js"></script>
+  </body>
+</html>
