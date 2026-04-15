@@ -257,13 +257,64 @@ code {
   margin-top: 18px;
 }
 
-.inline-links a,
+.inline-links-secondary {
+  gap: 10px 16px;
+  margin-top: 12px;
+}
+
+.social-links {
+  gap: 12px;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.social-link span:last-child {
+  white-space: nowrap;
+}
+
+.social-link:hover {
+  color: var(--text);
+  border-color: var(--accent-soft);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+body[data-theme="light"] .social-link:hover {
+  background: rgba(2, 6, 23, 0.03);
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.social-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.inline-links a:not(.social-link),
 .simple-item a,
 .article-footer a {
   border-bottom: 1px solid transparent;
 }
 
-.inline-links a:hover,
+.inline-links a:not(.social-link):hover,
 .simple-item a:hover,
 .article-footer a:hover {
   color: var(--accent);
