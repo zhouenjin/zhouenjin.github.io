@@ -161,7 +161,7 @@ code {
 
 .intro-shell {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
+  grid-template-columns: minmax(0, 1fr) 236px;
   gap: 28px;
   align-items: start;
 }
@@ -171,8 +171,8 @@ code {
 }
 
 .portrait {
-  width: 180px;
-  height: 180px;
+  width: 196px;
+  height: 196px;
   margin-left: auto;
   border-radius: 50%;
   object-fit: cover;
@@ -181,13 +181,13 @@ code {
 
 .intro-side {
   display: grid;
-  gap: 18px;
+  gap: 12px;
   align-content: start;
 }
 
 .education-block {
   margin-left: auto;
-  width: 180px;
+  width: 196px;
   text-align: left;
 }
 
@@ -203,8 +203,12 @@ code {
   color: var(--text);
 }
 
+.education-block p {
+  margin: 0 0 4px;
+}
+
 .education-meta {
-  margin: 6px 0 0;
+  margin: 8px 0 0;
   color: var(--text-soft);
   font-family: var(--font-mono);
   font-size: 0.92rem;
@@ -478,8 +482,8 @@ code {
   }
 
   .portrait {
-    width: 144px;
-    height: 144px;
+    width: 152px;
+    height: 152px;
     margin-left: 0;
   }
 
