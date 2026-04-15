@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Why PPO Replaced TRPO in Practice | Enjin Zhou</title>
+    <meta
+      name="description"
+      content="A blog post by Enjin Zhou on why PPO replaced TRPO in practical reinforcement learning workflows."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-glow glow-left"></div>
+    <div class="page-glow glow-right"></div>
+
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="/">Enjin Zhou</a>
+        <button
+          class="nav-toggle"
+          id="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="site-nav" id="site-nav">
+          <a href="/">Home</a>
+          <a href="/blog/">Blog</a>
+          <a href="https://github.com/zhouenjin/rl-notes" target="_blank" rel="noopener">Source Notes</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="section article-hero">
+        <div class="container article-shell">
+          <p class="eyebrow reveal">Blog Post</p>
+          <h1 class="article-title reveal reveal-delay-1">
+            Why PPO Replaced TRPO in Practice
+          </h1>
+          <p class="article-subtitle reveal reveal-delay-2">
+            A rewrite of my reinforcement learning notes on trust-region
+            methods, focusing on the moment where a beautiful idea became an
+            actually usable training workflow.
+          </p>
+          <div class="post-meta-row reveal reveal-delay-2">
+            <span>2026</span>
+            <span>Reinforcement Learning</span>
+            <span>Derived from <code>rl-notes</code></span>
+          </div>
+        </div>
+      </section>
+
+      <article class="section">
+        <div class="container article-shell">
+          <div class="article-card reveal">
+            <div class="article-prose">
+              <p>
+                If I compress the transition from TRPO to PPO into one sentence,
+                it is this: reinforcement learning did not stop needing safe
+                policy updates, but it desperately needed a way to get them
+                without paying the price of second-order optimization every
+                single iteration.
+              </p>
+              <p>
+                That is why PPO matters. Not because it changed the core goal,
+                but because it made that goal trainable with ordinary deep
+                learning infrastructure. In practice, that difference is large
+                enough to decide what people actually use.
+              </p>
+
+              <h2>The problem TRPO was trying to solve</h2>
+              <p>
+                Vanilla policy gradient methods have an awkward failure mode:
+                the update direction may be correct, but the step can still be
+                too large. Once the policy distribution moves too far in one
+                iteration, performance can collapse. Small steps are safer, but
+                then optimization becomes painfully slow.
+              </p>
+              <p>
+                TRPO addresses this with a very clean principle: do not let the
+                new policy move too far away from the old one. Formally, it
+                constrains the average KL divergence between old and new policy
+                distributions and optimizes within that trust region.
+              </p>
+
+              <blockquote>
+                TRPO is not only about where to move. It is equally about how
+                far one can move safely.
+              </blockquote>
+
+              <p>
+                This is an important conceptual step. It turned policy updates
+                from a learning-rate tuning game into a constrained optimization
+                problem. That idea survives almost unchanged in PPO.
+              </p>
+
+              <h2>Why TRPO is elegant but hard to use</h2>
+              <p>
+                The issue is not the idea. The issue is the machinery. Once the
+                KL constraint is introduced, the actor update is no longer a
+                simple first-order gradient step. A practical TRPO
+                implementation typically needs Fisher-vector products,
+                conjugate-gradient solves, line search, and careful numerical
+                handling of all of them.
+              </p>
+              <p>
+                This makes TRPO intellectually satisfying but operationally
+                expensive. It is harder to implement, harder to debug, and
+                awkward to scale with the same ease as the rest of deep
+                learning.
+              </p>
+
+              <h2>What PPO keeps and what it changes</h2>
+              <p>
+                PPO keeps the same high-level goal: improve the policy while
+                controlling how much it changes. What it changes is the route.
+                Instead of solving a constrained second-order problem directly,
+                PPO rewrites the safety idea into a simple loss function.
+              </p>
+              <p>
+                The most influential version, PPO-Clip, uses the importance
+                ratio between the new and old policy,
+                <code>r_t = pi_new(a|s) / pi_old(a|s)</code>, and then clips it
+                into a narrow interval such as <code>[1 - epsilon, 1 + epsilon]</code>.
+                The optimization always takes the conservative branch of the two
+                possible objectives.
+              </p>
+              <p>Intuitively, the rule is easy to remember:</p>
+              <ul>
+                <li>If an action is good, increase its probability, but not too much</li>
+                <li>If an action is bad, decrease its probability, but not too much</li>
+                <li>Never trust a large ratio jump, even when it looks beneficial</li>
+              </ul>
+
+              <h2>The real engineering win</h2>
+              <p>
+                The deepest practical reason PPO replaced TRPO is that it
+                converts trust-region thinking into a loss that standard
+                optimizers can handle. Once that happens, the rest of the
+                workflow becomes much more familiar:
+              </p>
+              <ul>
+                <li>collect on-policy trajectories</li>
+                <li>compute returns and GAE advantages</li>
+                <li>optimize actor and critic with ordinary mini-batch updates</li>
+                <li>repeat for multiple epochs on the same batch</li>
+              </ul>
+              <p>
+                That last point matters a lot. PPO can safely reuse the same
+                on-policy batch for multiple epochs, while TRPO usually does one
+                expensive actor update and then needs fresh data again. This is
+                one of the main reasons PPO feels dramatically more usable.
+              </p>
+
+              <h2>Why “multiple epochs” does not make PPO off-policy</h2>
+              <p>
+                This is one of the easiest mistakes to make when first learning
+                PPO. The fact that PPO trains for multiple epochs on the same
+                data does not turn it into an off-policy algorithm.
+              </p>
+              <p>
+                The key distinction is not whether data is reused inside the
+                current iteration. The key distinction is whether data from
+                older policies is carried across iterations. PPO does not do
+                that. After the current optimization round, the old batch is
+                discarded and the next round starts from newly collected
+                trajectories.
+              </p>
+
+              <h2>How I now remember the TRPO to PPO transition</h2>
+              <p>My current mental model is simple:</p>
+              <ul>
+                <li>REINFORCE says: optimize the policy directly</li>
+                <li>Actor-Critic says: use a critic to reduce variance</li>
+                <li>TRPO says: constrain the update so the policy does not jump too far</li>
+                <li>PPO says: keep the same safety instinct, but package it into a trainable loss</li>
+              </ul>
+              <p>
+                Seen this way, PPO is less a theoretical replacement than an
+                implementation victory. It is what happens when a principled
+                idea is rewritten to fit the tools that practitioners already
+                know how to scale.
+              </p>
+
+              <h2>What still matters when implementing PPO</h2>
+              <p>
+                Even though PPO is much simpler than TRPO, its success still
+                depends on a few engineering habits that are easy to overlook:
+              </p>
+              <ul>
+                <li>normalize advantages before actor updates</li>
+                <li>keep the policy batch on-policy and discard it after training</li>
+                <li>monitor KL drift even when using clipping</li>
+                <li>treat the clip coefficient as a stability-speed tradeoff</li>
+                <li>separate the conceptual role of gamma and lambda</li>
+              </ul>
+
+              <h2>Closing thought</h2>
+              <p>
+                Reading TRPO and PPO side by side changed how I think about
+                reinforcement learning progress. Sometimes progress is not a new
+                objective or a new theorem. Sometimes it is the translation of a
+                good idea into a form the entire ecosystem can actually use.
+              </p>
+              <p>
+                That is why PPO became the default choice across game
+                environments, robotics pipelines, and large-model RLHF
+                workflows. It did not abandon the trust-region intuition. It
+                made that intuition deployable.
+              </p>
+            </div>
+          </div>
+
+          <div class="article-footer reveal reveal-delay-1">
+            <a class="button button-secondary" href="/blog/">Back to blog</a>
+            <a
+              class="button button-primary"
+              href="https://github.com/zhouenjin/rl-notes"
+              target="_blank"
+              rel="noopener"
+            >
+              Read source notes
+            </a>
+          </div>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer section">
+      <div class="container footer-bottom">
+        <p><span id="current-year"></span> © Enjin Zhou</p>
+        <p>Built as a lightweight GitHub Pages site.</p>
+      </div>
+    </footer>
+
+    <script src="/main.js"></script>
+  </body>
+</html>
