@@ -539,6 +539,10 @@ body.palette-open {
   backdrop-filter: blur(16px);
 }
 
+.command-palette[hidden] {
+  display: none;
+}
+
 body[data-theme="light"] .command-palette {
   background: rgba(245, 245, 244, 0.78);
 }
