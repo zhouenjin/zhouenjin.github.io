@@ -21,6 +21,35 @@ function initNav() {
   });
 }
 
+function initTheme() {
+  const toggle = document.getElementById("theme-toggle");
+  const storageKey = "site-theme";
+
+  if (!toggle) {
+    return;
+  }
+
+  const applyTheme = (theme) => {
+    document.body.setAttribute("data-theme", theme);
+    toggle.textContent = theme === "dark" ? "Light" : "Dark";
+    toggle.setAttribute(
+      "aria-label",
+      theme === "dark" ? "Switch to light theme" : "Switch to dark theme",
+    );
+  };
+
+  const storedTheme = localStorage.getItem(storageKey);
+  const initialTheme = storedTheme === "light" ? "light" : "dark";
+  applyTheme(initialTheme);
+
+  toggle.addEventListener("click", () => {
+    const nextTheme =
+      document.body.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    localStorage.setItem(storageKey, nextTheme);
+    applyTheme(nextTheme);
+  });
+}
+
 function initReveal() {
   const items = document.querySelectorAll(".reveal");
 
@@ -55,6 +84,7 @@ function setYear() {
 
 document.addEventListener("DOMContentLoaded", () => {
   initNav();
+  initTheme();
   initReveal();
   setYear();
 });
