@@ -156,6 +156,14 @@ code {
   line-height: 1.02;
 }
 
+.name-zh {
+  margin: -2px 0 18px;
+  color: var(--text-soft);
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+}
+
 .intro-subtitle,
 .page-note,
 .article-subtitle,
